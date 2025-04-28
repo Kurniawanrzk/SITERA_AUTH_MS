@@ -34,7 +34,7 @@ class CheckIfBSU
         }
         try {
                // Melakukan request ke API untuk mendapatkan profil user
-               $response = $this->client->request("GET", env('BSU_BASE_URI')."/api/v1/bsu/profile", [
+               $response = $this->client->request("GET", "http://145.79.10.111:8003/api/v1/bsu/profile", [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',

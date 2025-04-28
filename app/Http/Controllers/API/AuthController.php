@@ -88,12 +88,12 @@ class AuthController extends Controller
         // Array endpoint untuk masing-masing role
         $endpoints = [
             'bsu' => [
-                'uri' => 'http://localhost:3000/api/v1/bsu/cek-user/' . $user->id,
+                'uri' => 'http://145.79.10.111:8003/api/v1/bsu/cek-user/' . $user->id,
                 'is_key' => 'is_bsu',
                 'id_key' => 'bsu_id'
             ],
             'nasabah' => [
-                'uri' => 'http://127.0.0.1:7000/api/v1/nasabah/cek-user/' . $user->id,
+                'uri' => 'http://145.79.10.111:8004/api/v1/nasabah/cek-user/' . $user->id,
                 'is_key' => 'is_nasabah',
                 'id_key' => 'nasabah_id'
             ],/*
