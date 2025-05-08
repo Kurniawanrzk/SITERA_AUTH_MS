@@ -19,7 +19,15 @@ return new class extends Migration
             $table->string('nama_instansi');
             $table->string('jabatan');
             $table->string('nama_pejabat');
-            $table->text('alamat');
+            $table->text('alamat')->nullable();
+            $table->string('jalan_dusun')->nullable();
+            $table->string('rt')->nullable();
+            $table->string('rw')->nullable();
+            $table->string('desa')->nullable();
+            $table->string('kecamatan')->nullable();
+            $table->string("kabupaten")->nullable();
+            $table->string('longitude', 100)->nullable();
+            $table->string('latitude', 100)->nullable();
             $table->string('email_instansi');
             $table->string('nomor_telepon');
             $table->timestamps();
