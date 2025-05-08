@@ -96,17 +96,18 @@ class AuthController extends Controller
                 'uri' => 'http://145.79.10.111:8004/api/v1/nasabah/cek-user/' . $user->id,
                 'is_key' => 'is_nasabah',
                 'id_key' => 'nasabah_id'
-            ],/*
+            ],
+            'pemerintah' => [
+                'uri' => 'http://145.79.10.111:8005/api/v1/pemerintah/cek-user/' . $user->id,
+                'is_key' => 'is_pemerintah',
+                'id_key' => 'pemerintah_id'
+            ]/*
             'perusahaan' => [
                 'uri' => env('PERUSAHAAN_BASE_URI') . '/api/v1/perusahaan/check-user/' . $user->id,
                 'is_key' => 'is_perusahaan',
                 'id_key' => 'perusahaan_id'
             ],
-            'pemerintah' => [
-                'uri' => env('PEMERINTAH_BASE_URI') . '/api/v1/pemerintah/check-user/' . $user->id,
-                'is_key' => 'is_pemerintah',
-                'id_key' => 'pemerintah_id'
-            ]*/
+            */
         ];
 
         
