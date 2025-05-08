@@ -103,7 +103,7 @@ class AuthController extends Controller
                 'id_key' => 'pemerintah_id'
             ],
             'perusahaan' => [
-                'uri' =>'http://145.79.10.111:8006/api/v1/pemerintah/cek-user/' . $user->id,
+                'uri' =>'http://145.79.10.111:8006/api/v1/perusahaan/cek-user/' . $user->id,
                 'is_key' => 'is_perusahaan',
                 'id_key' => 'perusahaan_id'
             ],
