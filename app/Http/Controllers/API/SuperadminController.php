@@ -99,27 +99,34 @@ class SuperadminController extends Controller
     }
     
 
-    public function activateUser(Request $request, $userId)
+    public function updateStatusUser(Request $request, $userId)
     {
         // Temukan pengguna berdasarkan ID
         $user = User::find($userId);
-
+        $pesan = "";
+        $pesanStatus = false;
         if (!$user) {
             return response()->json([
                 'status' => false,
                 'message' => 'Pengguna tidak ditemukan',
             ], 404);
         }
-
-        // Perbarui status pengguna menjadi aktif
-        $user->status_acc = 'active';
+        if($request->status == 'active'){
+            $user->status_acc = 'active';
+            $pesan = "Pengguna berhasil diaktifkan";
+            $pesanStatus = true;
+        }else{
+            $user->status_acc = 'inactive';
+            $pesan = "Pengguna berhasil dinonaktifkan";
+        }
+        // Simpan perubahan status pengguna
         $user->save();
 
         return response()->json([
-            'status' => true,
-            'message' => 'Pengguna berhasil diaktifkan',
+            'status' => $pesanStatus,
+            'message' => $pesan,
             'data' => $user,
-        ]);
+        ], 200);
     }
 
     

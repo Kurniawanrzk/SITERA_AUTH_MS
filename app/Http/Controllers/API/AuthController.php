@@ -21,6 +21,7 @@ class AuthController extends Controller
             'role' => 'required|in:bsu,perusahaan',
             'nomor_registrasi' => 'required',
             'nama' => 'required|string|max:255',
+            'nomor_telepon' => 'required|string|max:30',
             
         ]);
 
@@ -53,6 +54,7 @@ class AuthController extends Controller
                         'nomor_registrasi' => $request->nomor_registrasi,
                         'nama' => $request->nama,
                         'user_id' => $user->id,
+                        'nomor_telepon' => $request->nomor_telepon,
                     ]
                 ]);
         
@@ -89,6 +91,7 @@ class AuthController extends Controller
                         'nomor_registrasi' => $request->nomor_registrasi,
                         'nama' => $request->nama,
                         'user_id' => $user->id,
+                        'nomor_telepon' => $request->nomor_telepon,
                     ]
                 ]);
                 $data = json_decode($response->getBody(), true);
