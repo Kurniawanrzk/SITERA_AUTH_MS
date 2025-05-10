@@ -99,7 +99,7 @@ class SuperadminController extends Controller
     }
     
 
-    public function updateStatusUser(Request $request, $userId, $nomorTelepon,$status)
+    public function updateStatusUser(Request $request, $userId, $nomorTelepon,$status, $alasanDiTolak = null)
     {
         // Temukan pengguna berdasarkan ID
         $user = User::find($userId);
@@ -136,7 +136,9 @@ Tim SITERA";
             $pesanStatus = false;
             $pesanWA = "Halo Bapak/Ibu,
 
-Mohon maaf, kami ingin menginformasikan bahwa proses aktivasi akun Anda di platform SITERA belum dapat diselesaikan karena beberapa kendala teknis.
+Mohon maaf, kami ingin menginformasikan bahwa proses aktivasi akun Anda di platform SITERA belum dapat diselesaikan karena alasan berikut:
+
+{$alasanDiTolak}
 
 Tim kami sedang meninjau masalah ini dan akan segera menyelesaikannya. Anda tidak perlu melakukan tindakan tambahan saat ini.
 
