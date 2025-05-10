@@ -40,6 +40,10 @@ class AuthController extends Controller
 
         if($request->role == 'bsu'){
             $response = Http::post('http://145.79.10.111:8003/api/v1/bsu/registrasi-bsu',[
+                "Header" => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                ],
                 'nomor_registrasi' => $request->nomor_registrasi,
                 'nama' => $request->nama,
                 'user_id' => $user->id,
