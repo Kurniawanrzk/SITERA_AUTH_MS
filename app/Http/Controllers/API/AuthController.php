@@ -38,7 +38,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-            'status_acc' => 'inactive',
+            'status_acc' => 'menunggu',
         ]);
 
         if($request->role == 'bsu'){

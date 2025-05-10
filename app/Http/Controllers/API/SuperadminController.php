@@ -15,7 +15,7 @@ class SuperadminController extends Controller
         $client = new Client();
     
         // Ambil user BSU yang tidak aktif
-        $inactiveBSU = User::where('role', 'bsu')->where('status_acc', 'inactive')->get();
+        $inactiveBSU = User::where('role', 'bsu')->get();
         $user_ids_bsu = $inactiveBSU->pluck('id')->toArray();
     
         // Panggil API BSU
@@ -52,7 +52,7 @@ class SuperadminController extends Controller
         }
     
         // Ambil user Perusahaan yang tidak aktif
-        $inactivePerusahaan = User::where('role', 'perusahaan')->where('status_acc', 'inactive')->get();
+        $inactivePerusahaan = User::where('role', 'perusahaan')->get();
         $user_ids_perusahaan = $inactivePerusahaan->pluck('id')->toArray();
     
         // Panggil API Perusahaan
