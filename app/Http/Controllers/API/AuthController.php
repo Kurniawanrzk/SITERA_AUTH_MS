@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\{Hash, Http};
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
@@ -17,7 +17,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
             'role' => 'required|in:bsu,perusahaan',
-            'nomor_registrasi' => 'required|unique:users,nomor_registrasi',
+            'nomor_registrasi' => 'required',
             'nama' => 'required|string|max:255',
             
         ]);
@@ -29,6 +29,7 @@ class AuthController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+
         // Buat user
         $user = User::create([
             'email' => $request->email,
@@ -36,13 +37,29 @@ class AuthController extends Controller
             'role' => $request->role,
             'status_acc' => 'inactive',
         ]);
-        return response()->json([
-            'status' => true,
-            'message' => 'Registrasi berhasil',
-            'data' => [
-                'user' => $user,
-            ]
-        ], 201);
+
+        if($request->role == 'bsu'){
+            $response = Http::post('http://145.79.10.111:8003/api/v1/bsu/registrasi-bsu',[
+                'nomor_registrasi' => $request->nomor_registrasi,
+                'nama' => $request->nama,
+                'user_id' => $user->id,
+            ]);
+            $data = json_decode($response->getBody(), true);
+            if($data['status'] != false)
+            {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Registerasi BSU Berhasil",
+                ], 422);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Registerasi BSU Gagal",
+                ], 422);
+            }
+        }
+        
+    
     }
     public function register(Request $request)
     {
