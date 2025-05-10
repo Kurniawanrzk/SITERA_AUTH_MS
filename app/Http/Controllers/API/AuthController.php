@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\{Hash, Http};
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class AuthController extends Controller
 {
@@ -39,30 +41,43 @@ class AuthController extends Controller
         ]);
 
         if($request->role == 'bsu'){
-            $response = Http::post('http://145.79.10.111:8003/api/v1/bsu/registrasi-bsu',[
-                "Header" => [
-                    'Accept' => 'application/json',
-                    'Content-Type' => 'application/json',
-                ],
-                'nomor_registrasi' => $request->nomor_registrasi,
-                'nama' => $request->nama,
-                'user_id' => $user->id,
-            ]);
-            $data = json_decode($response->getBody(), true);
-            return response()->json($data);
-            if($data['status'] != false)
-            {
+            $client = new Client();
+            
+            try {
+                $response = $client->post('http://145.79.10.111:8003/api/v1/bsu/registrasi-bsu', [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => [
+                        'nomor_registrasi' => $request->nomor_registrasi,
+                        'nama' => $request->nama,
+                        'user_id' => $user->id,
+                    ]
+                ]);
+        
+                $data = json_decode($response->getBody(), true);
+        
+                if ($data['status'] != false) {
+                    return response()->json([
+                        'status' => true,
+                        'message' => "Registrasi BSU Berhasil",
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Registrasi BSU Gagal",
+                    ], 422);
+                }
+            } catch (RequestException $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => "Registerasi BSU Berhasil",
-                ], 422);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => "Registerasi BSU Gagal",
-                ], 422);
+                    'message' => 'Gagal menghubungi layanan BSU',
+                    'error' => $e->getMessage()
+                ], 500);
             }
         }
+        
         
     
     }
