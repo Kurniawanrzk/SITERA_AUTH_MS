@@ -61,7 +61,7 @@ class AuthController extends Controller
                 if ($data['status'] != false) {
                     return response()->json([
                         'status' => true,
-                        'message' => "Registrasi BSU Berhasil",
+                        'message' => "Registrasi BSU Berhasil, tunggu informasi selanjutnya dari email",
                     ]);
                 } else {
                     return response()->json([
@@ -73,6 +73,40 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => 'Gagal menghubungi layanan BSU',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        } else if($request->role == 'perusahaan'){
+            $client = new Client();
+            
+            try {
+                $response = $client->post('http://145.79.10.111:8006/api/v1/perusahaan/registerasi-perusahaan', [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => [
+                        'nomor_registrasi' => $request->nomor_registrasi,
+                        'nama' => $request->nama,
+                        'user_id' => $user->id,
+                    ]
+                ]);
+                $data = json_decode($response->getBody(), true);
+                if ($data['status'] != false) {
+                    return response()->json([
+                        'status' => true,
+                        'message' => "Registrasi Perusahaan Berhasil, tunggu informasi selanjutnya dari email",
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Registrasi Perusahaan Gagal",
+                    ], 422);
+                }
+            } catch (RequestException $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Gagal menghubungi layanan Perusahaan',
                     'error' => $e->getMessage()
                 ], 500);
             }
