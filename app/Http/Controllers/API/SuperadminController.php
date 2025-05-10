@@ -35,24 +35,36 @@ class SuperadminController extends Controller
             ], 404);
         }
 
+      
+        $inactivePerusahaan = User::where('role', 'perusahaan')->where('status_acc', 'inactive')->get('id');
+        $user_ids_perusahaan = $inactivePerusahaan->pluck('id')->toArray();
+        $response_perusahaan = $client->request("GET", "http://145.79.10.111:8006/api/v1/perusahaan/cek-perusahaan-superadmin", [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => $request->header('Authorization'),
+            ],
+            'json' => [
+                'user_ids' => $user_ids_perusahaan,
+            ],
+        ]);
+        $data_perusahaan = json_decode($response_perusahaan->getBody(), true) ?? [];
+        if (!isset($data_perusahaan['status'])) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data Perusahaan tidak valid atau tidak ditemukan.',
+            ], 404);
+        }
         return response()->json([
             'status' => true,
             'message' => 'Daftar pengguna tidak aktif',
             'data' => [
                 'bsu' => $data_bsu['data'],
+                'perusahaan' => $data_perusahaan['data'],
             ],
         ]);
-        $inactivePerusahaan = User::where('role', 'perusahaan')->where('status_acc', 'inactive')->get('id');
-
         // Gabungkan hasil
-        return response()->json([
-            'status' => true,
-            'message' => 'Daftar pengguna tidak aktif',
-            'data' => [
-                'bsu' => $inactiveBSU,
-                'perusahaan' => $inactivePerusahaan,
-            ],
-        ]);
+     
     }
 
     public function activateUser(Request $request, $userId)
