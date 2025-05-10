@@ -45,6 +45,7 @@ class AuthController extends Controller
                 'user_id' => $user->id,
             ]);
             $data = json_decode($response->getBody(), true);
+            return response()->json($data);
             if($data['status'] != false)
             {
                 return response()->json([
