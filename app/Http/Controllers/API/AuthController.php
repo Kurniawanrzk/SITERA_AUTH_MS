@@ -153,6 +153,14 @@ class AuthController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
+
+        if(Users::where("email", $request->email)->where("status_acc", "inactive")->exists())
+        {
+            return response()->json([
+                'status' => false,
+                'message' => 'Akun anda belum terverifikasi, silahkan tunggu email dari kami'
+            ], 401);
+        }
     
         if ($validator->fails()) {
             return response()->json([
