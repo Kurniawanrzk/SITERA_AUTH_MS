@@ -154,7 +154,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if(Users::where("email", $request->email)->where("status_acc", "inactive")->exists())
+        if(User::where("email", $request->email)->where("status_acc", "inactive")->exists())
         {
             return response()->json([
                 'status' => false,
