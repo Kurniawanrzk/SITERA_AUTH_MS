@@ -162,7 +162,6 @@ Tim SITERA";
                 ],
             ]);
         
-            echo $response->getBody();
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 echo $e->getResponse()->getBody();
