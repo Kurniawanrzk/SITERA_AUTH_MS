@@ -11,6 +11,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
+    public function 
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
