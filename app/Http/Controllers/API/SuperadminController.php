@@ -99,11 +99,13 @@ class SuperadminController extends Controller
     }
     
 
-    public function updateStatusUser(Request $request, $userId)
+    public function updateStatusUser(Request $request, $userId, $nomorTelepon,$status)
     {
         // Temukan pengguna berdasarkan ID
         $user = User::find($userId);
         $pesan = "";
+        $pesanWA = "";
+        $client = new Client();
         $pesanStatus = false;
         if (!$user) {
             return response()->json([
@@ -111,16 +113,65 @@ class SuperadminController extends Controller
                 'message' => 'Pengguna tidak ditemukan',
             ], 404);
         }
-        if($request->status == 'active'){
+        if($status == 'approve'){
             $user->status_acc = 'active';
             $pesan = "Pengguna berhasil diaktifkan";
             $pesanStatus = true;
+            $pesanWA = "Halo Bapak/Ibu,
+
+Selamat! Akun Anda telah berhasil diaktifkan di platform SITERA.
+
+Anda sekarang dapat mengakses seluruh fitur dengan mengunjungi situs resmi kami di:
+sitera.site
+
+Silakan login menggunakan kredensial yang telah Anda daftarkan sebelumnya. Jika Anda memerlukan bantuan lebih lanjut atau mengalami kendala saat login, jangan ragu untuk menghubungi tim dukungan kami.
+
+Terima kasih telah memilih SITERA sebagai mitra digital Anda.
+
+Salam,
+Tim SITERA";
         }else{
             $user->status_acc = 'inactive';
             $pesan = "Pengguna berhasil dinonaktifkan";
+            $pesanStatus = false;
+            $pesanWA = "Halo Bapak/Ibu,
+
+Mohon maaf, kami ingin menginformasikan bahwa proses aktivasi akun Anda di platform SITERA belum dapat diselesaikan karena beberapa kendala teknis.
+
+Tim kami sedang meninjau masalah ini dan akan segera menyelesaikannya. Anda tidak perlu melakukan tindakan tambahan saat ini.
+
+Kami sangat menghargai kesabaran Anda dan berkomitmen untuk menyelesaikan proses aktivasi secepat mungkin. Kami akan menghubungi Anda kembali dalam 24 jam ke depan dengan informasi terbaru.
+
+Jika Anda memiliki pertanyaan mendesak, silakan balas pesan ini atau hubungi tim dukungan kami di [nomor/email dukungan].
+
+Terima kasih atas pengertian Anda.
+
+Salam,
+Tim SITERA";
         }
         // Simpan perubahan status pengguna
         $user->save();
+
+        try {
+            $response = $client->request('POST', 'https://api.fonnte.com/send', [
+                'headers' => [
+                    'Authorization' => 'vcnjUGCjCxauEgdqBPgp', // ganti TOKEN dengan token asli
+                ],
+                'form_params' => [
+                    'target' => $nomorTelepon,
+                    'message' => $pesanWA,
+                    'countryCode' => '62', // optional
+                ],
+            ]);
+        
+            echo $response->getBody();
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                echo $e->getResponse()->getBody();
+            } else {
+                echo $e->getMessage();
+            }
+        }
 
         return response()->json([
             'status' => $pesanStatus,
