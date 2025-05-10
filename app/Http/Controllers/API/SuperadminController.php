@@ -15,9 +15,11 @@ class SuperadminController extends Controller
         $client = new Client();
         $inactiveBSU = User::where('role', 'bsu')->where('status_acc', 'inactive')
         ->get();
-
-        $responseDetailBSU = $client->request("GET", "");
-        
+        return response()->json([
+            'status' => true,
+            'message' => 'Daftar pengguna tidak aktif',
+            'data' => $inactiveBSU,
+        ]);
         $inactivePerusahaan = User::where('role', 'perusahaan')->where('status_acc', 'inactive')->get();
 
         // Gabungkan hasil
