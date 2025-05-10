@@ -17,6 +17,6 @@ Route::prefix('v1/auth')->group(function(){
     Route::put('edit/profile', [App\Http\Controllers\API\AuthController::class, 'editProfile'])->middleware('auth:api');
     Route::post('/register-non-nasabah', [App\Http\Controllers\API\AuthController::class, 'registerNonNasabah']);
     Route::get("/get-inactive-users", [App\Http\Controllers\API\SuperadminController::class, 'getInactiveUsers'])->middleware('auth:api');
-    Route::get("/update-status-user/{userId}/{nomorTelepon}/{status}", [App\Http\Controllers\API\SuperadminController::class, 'updateStatusUser'])->middleware('auth:api');
+    Route::get("/update-status-user/{userId}/{nomorTelepon}/{status}", [App\Http\Controllers\API\SuperadminController::class, 'updateStatusUser']);
 
 });
