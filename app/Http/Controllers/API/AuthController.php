@@ -194,7 +194,9 @@ class AuthController extends Controller
             'is_perusahaan' => false,
             'perusahaan_id' => null,
             'is_pemerintah' => false,
-            'pemerintah_id' => null
+            'pemerintah_id' => null,
+            'is_superadmin' => false,
+            'superadmin_id' => null,
         ];
         
         // Array endpoint untuk masing-masing role
@@ -224,28 +226,33 @@ class AuthController extends Controller
 
         
         // Cek setiap role
-        foreach ($endpoints as $role => $endpoint) {
+        if($user->role != 'super_admin') {
+            foreach ($endpoints as $role => $endpoint) {
             
-            try {
-                $response = $client->request('GET', $endpoint['uri'], [
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/json',
-                    ],
-                ]);
-                
-                $data = json_decode($response->getBody(), true);
-                $isRole = isset($data['status']) && $data['status'] === true;
-                $roleId = $isRole ? $data['data']['id'] ?? null : null;
-                
-                $roleData[$endpoint['is_key']] = $isRole;
-                $roleData[$endpoint['id_key']] = $roleId;
-                
-            } catch (\Exception $e) {
-                // Log error jika perlu
-                \Log::error("Failed to check {$role} role: " . $e->getMessage());
-                // Tidak perlu mengubah nilai default (false/null)
+                try {
+                    $response = $client->request('GET', $endpoint['uri'], [
+                        'headers' => [
+                            'Accept' => 'application/json',
+                            'Content-Type' => 'application/json',
+                        ],
+                    ]);
+                    
+                    $data = json_decode($response->getBody(), true);
+                    $isRole = isset($data['status']) && $data['status'] === true;
+                    $roleId = $isRole ? $data['data']['id'] ?? null : null;
+                    
+                    $roleData[$endpoint['is_key']] = $isRole;
+                    $roleData[$endpoint['id_key']] = $roleId;
+                    
+                } catch (\Exception $e) {
+                    // Log error jika perlu
+                    \Log::error("Failed to check {$role} role: " . $e->getMessage());
+                    // Tidak perlu mengubah nilai default (false/null)
+                }
             }
+        } else {
+            $roleData['is_superadmin'] = true;
+            $roleData['superadmin_id'] = $user->id;
         }
         
         // Tambahkan custom claims ke token
