@@ -138,11 +138,7 @@ Tim SITERA";
 
 Mohon maaf, kami ingin menginformasikan bahwa proses aktivasi akun Anda di platform SITERA belum dapat diselesaikan karena alasan berikut:
 
-{$alasanDiTolak}
-
-Tim kami sedang meninjau masalah ini dan akan segera menyelesaikannya. Anda tidak perlu melakukan tindakan tambahan saat ini.
-
-Kami sangat menghargai kesabaran Anda dan berkomitmen untuk menyelesaikan proses aktivasi secepat mungkin. Kami akan menghubungi Anda kembali dalam 24 jam ke depan dengan informasi terbaru.
+*{$alasanDiTolak}*
 
 Jika Anda memiliki pertanyaan mendesak, silakan balas pesan ini atau hubungi tim dukungan kami di [nomor/email dukungan].
 
