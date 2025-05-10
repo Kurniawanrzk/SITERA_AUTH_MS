@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('role', ['nasabah', 'bsu', 'perusahaan', 'pemerintah', 'super_admin']);
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
+            $table->enum('status_acc', ['active', 'inactive'])->default('inactive')->nullable();
             $table->timestamps();
         });
     }

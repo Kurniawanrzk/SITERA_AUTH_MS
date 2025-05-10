@@ -15,4 +15,5 @@ Route::prefix('v1/auth')->group(function(){
     Route::post('/logout', [App\Http\Controllers\Api\AuthController::class, 'logout'])->middleware('auth:api');
     Route::get('/profile', [App\Http\Controllers\Api\AuthController::class, 'profile'])->middleware('auth:api');
     Route::put('edit/profile', [App\Http\Controllers\Api\AuthController::class, 'editProfile'])->middleware('auth:api');
+    Route::post('/register-non-nasabah', [App\Http\Controllers\Api\AuthController::class, 'registerNonNasabah']);
 });

@@ -11,7 +11,39 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function 
+    public function registerNonNasabah(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
+            'role' => 'required|in:bsu,perusahaan',
+            'nomor_registrasi' => 'required|unique:users,nomor_registrasi',
+            'nama' => 'required|string|max:255',
+            
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        // Buat user
+        $user = User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'status_acc' => 'inactive',
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Registrasi berhasil',
+            'data' => [
+                'user' => $user,
+            ]
+        ], 201);
+    }
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
