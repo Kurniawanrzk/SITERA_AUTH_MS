@@ -47,6 +47,7 @@ class SuperadminController extends Controller
                     'email' => $user->email,
                     'role' => $user->role,
                     'id' => $user->id,
+                    'status' => $user->status_acc,
                 ]);
             }
         }
@@ -84,6 +85,7 @@ class SuperadminController extends Controller
                     'email' => $user->email,
                     'role' => $user->role,
                     'id' => $user->id,
+                    'status' => $user->status_acc,
                 ]);
             }
         }
